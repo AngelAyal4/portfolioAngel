@@ -65,3 +65,4 @@ FASE 8: Deploy Vercel                 (ISR, dominio, CI/CD)
 | 06 | `specs/06-cv-section.md` | Experiencia, educacion, cursos |
 | 07 | `specs/07-contact-section.md` | Formulario + API route |
 | 08 | `specs/08-deploy-vercel.md` | Vercel, ISR, dominio |
+| 09 | `specs/09-dark-blue-pcb.md` | Azul oscuro nocturno + PCB fondo |
