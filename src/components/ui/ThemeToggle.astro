@@ -1,0 +1,98 @@
+---
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<button
+  id="theme-toggle"
+  type="button"
+  aria-label="Cambiar tema"
+  aria-pressed="false"
+  class:list={[
+    "inline-flex h-9 w-9 items-center justify-center rounded-lg border border-border bg-surface text-text hover:bg-accent/10 hover:text-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg",
+    className,
+  ]}
+>
+  <span class="icon-sun hidden" aria-hidden="true">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      ><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path
+        d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path
+        d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path
+        d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path
+        d="m19.07 4.93-1.41 1.41"></path></svg
+    >
+  </span>
+  <span class="icon-moon hidden" aria-hidden="true">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      ><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg
+    >
+  </span>
+</button>
+
+<script is:inline>
+  (function () {
+    var btn = document.getElementById("theme-toggle");
+    if (!btn) return;
+
+    var sun = btn.querySelector(".icon-sun");
+    var moon = btn.querySelector(".icon-moon");
+
+    function getTheme() {
+      return document.documentElement.getAttribute("data-theme") || "dark";
+    }
+
+    function render(theme) {
+      var isDark = theme === "dark";
+      if (sun) sun.classList.toggle("hidden", !isDark);
+      if (moon) moon.classList.toggle("hidden", isDark);
+      btn.setAttribute("aria-pressed", isDark ? "true" : "false");
+      btn.setAttribute(
+        "aria-label",
+        isDark ? "Cambiar a modo claro" : "Cambiar a modo oscuro",
+      );
+    }
+
+    render(getTheme());
+
+    btn.addEventListener("click", function () {
+      var next = getTheme() === "dark" ? "light" : "dark";
+      document.documentElement.setAttribute("data-theme", next);
+      try {
+        localStorage.setItem("theme", next);
+      } catch {}
+      render(next);
+      window.dispatchEvent(
+        new CustomEvent("theme-change", { detail: { theme: next } }),
+      );
+    });
+
+    // Sync if another tab changes storage
+    window.addEventListener("storage", function (e) {
+      if (e.key === "theme" && e.newValue) {
+        document.documentElement.setAttribute("data-theme", e.newValue);
+        render(e.newValue);
+      }
+    });
+  })();
+</script>

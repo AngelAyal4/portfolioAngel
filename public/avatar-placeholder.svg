@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="Avatar placeholder">
+  <rect width="400" height="400" fill="#1e293b"/>
+  <circle cx="200" cy="150" r="60" fill="#22d3ee" opacity="0.3"/>
+  <path d="M100 320 Q200 250 300 320 Z" fill="#22d3ee" opacity="0.2"/>
+  <text x="200" y="360" text-anchor="middle" fill="#94a3b8" font-family="system-ui" font-size="14">avatar.jpg pendiente</text>
+</svg>

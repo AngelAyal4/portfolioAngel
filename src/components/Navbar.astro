@@ -1,0 +1,35 @@
+---
+import ThemeToggle from "./ui/ThemeToggle.astro";
+
+interface Props {
+  class?: string;
+}
+const { class: className } = Astro.props;
+---
+
+<header class:list={["sticky top-0 z-20 border-b border-border bg-bg/80 backdrop-blur supports-[backdrop-filter]:bg-bg/60", className]}>
+  <div class="mx-auto flex max-w-[1280px] items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
+    <a href="#inicio" class="font-display text-base font-bold text-text hover:text-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg rounded">
+      Angel Ayala
+    </a>
+
+    <nav aria-label="Navegación principal" class="hidden items-center gap-6 md:flex">
+      <a href="#sobre-mi" class="text-sm font-medium text-text-muted hover:text-accent transition-colors">Sobre mí</a>
+      <a href="#proyectos" class="text-sm font-medium text-text-muted hover:text-accent transition-colors">Proyectos</a>
+      <a href="#cv" class="text-sm font-medium text-text-muted hover:text-accent transition-colors">CV</a>
+      <a href="#contacto" class="text-sm font-medium text-text-muted hover:text-accent transition-colors">Contacto</a>
+    </nav>
+
+    <div class="flex items-center gap-2">
+      <ThemeToggle />
+    </div>
+  </div>
+
+  <!-- Mobile nav simple (sin JS) -->
+  <nav aria-label="Navegación móvil" class="flex items-center justify-center gap-4 border-t border-border px-4 py-2 md:hidden">
+    <a href="#sobre-mi" class="text-xs font-medium text-text-muted hover:text-accent">Sobre mí</a>
+    <a href="#proyectos" class="text-xs font-medium text-text-muted hover:text-accent">Proyectos</a>
+    <a href="#cv" class="text-xs font-medium text-text-muted hover:text-accent">CV</a>
+    <a href="#contacto" class="text-xs font-medium text-text-muted hover:text-accent">Contacto</a>
+  </nav>
+</header>

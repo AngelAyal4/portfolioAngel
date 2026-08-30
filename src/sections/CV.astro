@@ -1,0 +1,80 @@
+---
+import Section from "../components/ui/Section.astro";
+import CVItem from "../components/CVItem.astro";
+
+const experiencia = [
+  {
+    title: "Soporte Técnico / IT",
+    entity: "Independiente / Empresa",
+    period: "2014 — Actual",
+    description: "Más de 10 años resolviendo infraestructura, redes y soporte a usuarios. Transición a desarrollo fullstack: automatización, scripting y aplicaciones web a medida.",
+    badges: ["Soporte", "Redes", "Linux", "Automatización"],
+    current: true,
+  },
+  {
+    title: "Desarrollador Fullstack (en formación)",
+    entity: "Proyectos personales / Freelance",
+    period: "2023 — Actual",
+    description: "Construcción de portfolios, APIs y apps con React, Astro, Node.js y PostgreSQL. Enfoque en código limpio, accesibilidad y deploy continuo.",
+    badges: ["React", "Astro", "Node.js", "PostgreSQL"],
+    current: true,
+  },
+];
+
+const educacion = [
+  {
+    title: "Ingeniería en Sistemas de Información",
+    entity: "UTN — Facultad Regional Paraná",
+    period: "2022 — Actual · Com. 1º K13",
+    description: "Formación en algoritmos, estructuras de datos, bases de datos y arquitectura de software. Promedio y materias al día.",
+    badges: ["Algoritmos", "Bases de Datos", "Sistemas"],
+  },
+];
+
+const cursos = [
+  { title: "Curso React / Next.js", entity: "Plataforma (ej. Udemy)", period: "2024", description: "Hooks, SSR, routing y optimización.", badges: ["React","Next.js"] },
+  { title: "Node.js + NestJS", entity: "Plataforma", period: "2024", description: "APIs REST, auth JWT, testing.", badges: ["NestJS","TypeScript"] },
+  { title: "SQL & PostgreSQL", entity: "Plataforma", period: "2023", description: "Modelado, consultas y optimización.", badges: ["PostgreSQL"] },
+];
+// TODO: Reemplazar cursos placeholder por certificaciones reales
+---
+
+<Section id="cv" class="scroll-mt-16 bg-surface/50" aria-labelledby="cv-heading">
+  <div class="mx-auto max-w-[1280px]">
+    <h2 id="cv-heading" class="font-display text-2xl md:text-3xl font-bold text-text">Experiencia / CV</h2>
+    <p class="mt-2 max-w-2xl text-sm text-text-muted">Trayectoria escaneable. Imprimible con <kbd class="rounded border border-border bg-surface px-1 py-0.5 text-xs">Ctrl+P</kbd>.</p>
+
+    <div class="mt-10 grid gap-10 lg:grid-cols-3">
+      <!-- Experiencia -->
+      <div class="lg:col-span-1">
+        <h3 class="font-display text-lg font-semibold text-text">Experiencia</h3>
+        <ol class="mt-4 space-y-8 border-l-2 border-border ml-2 pl-6" aria-label="Experiencia laboral">
+          {experiencia.map(item => <CVItem {...item} />)}
+        </ol>
+      </div>
+
+      <!-- Educación -->
+      <div class="lg:col-span-1">
+        <h3 class="font-display text-lg font-semibold text-text">Educación</h3>
+        <ol class="mt-4 space-y-8 border-l-2 border-border ml-2 pl-6" aria-label="Educación">
+          {educacion.map(item => <CVItem {...item} />)}
+        </ol>
+      </div>
+
+      <!-- Cursos -->
+      <div class="lg:col-span-1">
+        <h3 class="font-display text-lg font-semibold text-text">Cursos / Certificaciones</h3>
+        <ol class="mt-4 space-y-8 border-l-2 border-border ml-2 pl-6" aria-label="Cursos y certificaciones">
+          {cursos.map(item => <CVItem {...item} />)}
+        </ol>
+        <p class="mt-6 text-xs text-text-muted">¿Tenés cursos para sumar? Edita <code class="rounded bg-surface border border-border px-1 py-0.5 text-xs">src/sections/CV.astro:6</code>.</p>
+      </div>
+    </div>
+
+    <div class="mt-10 flex justify-center">
+      <a href="#contacto" class="inline-flex items-center justify-center rounded-lg px-5 py-2.5 text-sm font-semibold bg-accent text-on-accent hover:bg-accent-hover border border-transparent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg">
+        Disponible para proyectos → Contacto
+      </a>
+    </div>
+  </div>
+</Section>

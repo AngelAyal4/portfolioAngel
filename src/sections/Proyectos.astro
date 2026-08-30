@@ -1,0 +1,59 @@
+---
+import Section from "../components/ui/Section.astro";
+import ProyectosGrid from "../components/ProyectosGrid";
+import { getProyectos } from "../lib/wp-queries";
+import type { Proyecto } from "../lib/types";
+
+let proyectos: Proyecto[] = await getProyectos();
+
+// Fallback genérico si WP vacío
+const fallback: Proyecto[] = [
+  {
+    id: "fallback-1",
+    title: "Portfolio Astro + WP",
+    slug: "portfolio-astro-wp",
+    excerpt: "Portfolio headless con Astro, Tailwind y WPGraphQL. SSG + ISR.",
+    content: null,
+    featuredImage: { node: { sourceUrl: "https://picsum.photos/seed/a/800/600", altText: "Portfolio Astro" } },
+    proyectoFields: { proyectoUrl: "https://portfolio.example.com", repoUrl: "https://github.com/angel/portfolio", techStack: ["Astro","Tailwind","WordPress","GraphQL"] },
+    categoriasProyecto: { nodes: [{ name:"Fullstack", slug:"fullstack" }] },
+  },
+  {
+    id: "fallback-2",
+    title: "API Task Manager",
+    slug: "api-task-manager",
+    excerpt: "API REST con auth JWT y CRUD de tareas. NestJS + PostgreSQL.",
+    content: null,
+    featuredImage: { node: { sourceUrl: "https://picsum.photos/seed/b/800/600", altText: "API Task Manager" } },
+    proyectoFields: { proyectoUrl: "https://api.example.com/docs", repoUrl: "https://github.com/angel/task-api", techStack: ["NestJS","PostgreSQL","Docker"] },
+    categoriasProyecto: { nodes: [{ name:"Backend", slug:"backend" }] },
+  },
+  {
+    id: "fallback-3",
+    title: "E-commerce Mobile",
+    slug: "ecommerce-mobile",
+    excerpt: "App de compras con React Native, Expo y Stripe.",
+    content: null,
+    featuredImage: { node: { sourceUrl: "https://picsum.photos/seed/c/800/600", altText: "E-commerce Mobile" } },
+    proyectoFields: { proyectoUrl: "https://expo.dev/@angel/app", repoUrl: "https://github.com/angel/shop-mobile", techStack: ["React Native","Expo","Stripe"] },
+    categoriasProyecto: { nodes: [{ name:"Mobile", slug:"mobile" }] },
+  },
+];
+
+const isFallback = proyectos.length === 0;
+if (isFallback) proyectos = fallback;
+---
+
+<Section id="proyectos" class="scroll-mt-16" aria-labelledby="proyectos-heading">
+  <div class="mx-auto max-w-[1280px]">
+    <div class="flex items-baseline justify-between gap-4">
+      <h2 id="proyectos-heading" class="font-display text-2xl md:text-3xl font-bold text-text">Proyectos</h2>
+      {isFallback && <span class="text-xs text-text-muted">Mostrando ejemplos — conecta WP para ver reales</span>}
+    </div>
+    <p class="mt-2 max-w-2xl text-sm text-text-muted">Filtrá por categoría. Datos desde WordPress vía WPGraphQL.</p>
+
+    <div class="mt-8">
+      <ProyectosGrid proyectos={proyectos} client:load />
+    </div>
+  </div>
+</Section>

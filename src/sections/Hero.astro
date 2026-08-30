@@ -1,0 +1,49 @@
+---
+import Section from "../components/ui/Section.astro";
+import Button from "../components/ui/Button.astro";
+import ScrollIndicator from "../components/ScrollIndicator.astro";
+---
+
+<Section id="inicio" class="min-h-[100dvh] flex items-center justify-center py-16 md:py-24 scroll-mt-16">
+  <div class="mx-auto max-w-[1280px] w-full">
+    <div class="flex flex-col items-center text-center">
+      <!-- Fondo sutil gradiente (capa decorativa, no interfiere) -->
+      <div aria-hidden="true" class="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-b from-accent/5 via-transparent to-transparent"></div>
+
+      <p class="animate-fadeIn text-sm font-medium tracking-widest text-accent uppercase motion-reduce:animate-none" style="animation-delay: 0ms">
+        Hola, soy Angel
+      </p>
+
+      <h1 class="animate-fadeIn mt-3 font-display text-3xl md:text-4xl font-bold leading-tight text-text motion-reduce:animate-none" style="animation-delay: 80ms">
+        Desarrollador Fullstack
+        <span class="block text-text-muted font-normal text-lg md:text-xl mt-2 font-body">Est. Ingeniería de Sistemas</span>
+      </h1>
+
+      <p class="animate-fadeIn mt-4 max-w-2xl text-base md:text-lg text-text-muted leading-relaxed motion-reduce:animate-none" style="animation-delay: 160ms">
+        Construyo aplicaciones web modernas, de la idea al deploy.
+      </p>
+
+      <div class="animate-fadeIn mt-8 flex flex-wrap items-center justify-center gap-3 motion-reduce:animate-none" style="animation-delay: 240ms">
+        <Button href="#proyectos" variant="primary" ariaLabel="Ver proyectos">Ver Proyectos</Button>
+        <Button href="#contacto" variant="secondary" ariaLabel="Ir a contacto">Contacto</Button>
+      </div>
+
+      <div class="animate-fadeIn mt-12 motion-reduce:animate-none" style="animation-delay: 320ms">
+        <ScrollIndicator />
+      </div>
+    </div>
+  </div>
+</Section>
+
+<style>
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .animate-fadeIn {
+    animation: fadeIn 0.5s ease-out both;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .animate-fadeIn { animation: none !important; }
+  }
+</style>
