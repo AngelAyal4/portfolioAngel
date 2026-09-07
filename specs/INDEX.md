@@ -1,5 +1,8 @@
 # Specs del Portfolio — Orden de Ejecucion
 
+> Fuente de verdad de objetivos: `specs/00-criterios-de-exito.md` (CE-1..CE-8, aprobado 2026-09-07).
+> Specs v2 (reescritas 2026-09-07): 02, 05, 07, 08. Nueva: 10. Pendientes de rewrite: 03, 04, 06.
+
 ## Reglas Generales
 
 1. Cada spec se implementa como una fase independiente
@@ -32,6 +35,9 @@ FASE 7: Contacto Section + API        (formulario funcional, endpoint)
    |
    v
 FASE 8: Deploy Vercel                 (ISR, dominio, CI/CD)
+   |
+   v
+FASE 10: i18n ES/EN                   (diccionarios, rutas /en, toggle) — NUEVA
 ```
 
 ## Dependencias entre Fases
@@ -66,3 +72,5 @@ FASE 8: Deploy Vercel                 (ISR, dominio, CI/CD)
 | 07 | `specs/07-contact-section.md` | Formulario + API route |
 | 08 | `specs/08-deploy-vercel.md` | Vercel, ISR, dominio |
 | 09 | `specs/09-dark-blue-pcb.md` | Azul oscuro nocturno + PCB fondo |
+| 00 | `specs/00-criterios-de-exito.md` | CE-1..CE-8 + impacto en specs |
+| 10 | `specs/10-i18n.md` | ES/EN: diccionarios, rutas /en, toggle |

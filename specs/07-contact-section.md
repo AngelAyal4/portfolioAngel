@@ -1,76 +1,53 @@
-# 7. Contacto Section + API
+# 7. Contacto Section + API v2 — REESCRITA 2026-09-07
+
+> Criterio que la gobierna: **CE-5** (formulario que envía de verdad).
+> Decisión aprobada: **Resend**. Reemplaza a la v1 (opciones A/B/C abiertas, "log en prod" como aceptable — ya no lo es).
 
 ## Objetivo
 
-Formulario de contacto funcional + links a redes. Que reclitadores y clientes puedan escribirte sin abrir el cliente de correo.
+Que un reclutador o cliente escriba y el mensaje **llegue al email real de Angel**, con confirmación visible y sin fricción. El formulario es el segundo conversor después de Proyectos.
 
-## Estructura
+## Contenido real (CE-5)
 
-```
-┌─────────────────────────────────────────┐
-│   CONTACTO                              │
-│                                         │
-│   [Nombre]     [Email]                  │
-│   [Mensaje — textarea]                  │
-│   [Enviar]                              │
-│                                         │
-│   ── o encontrame en ──                 │
-│   [GitHub] [LinkedIn] [Email]           │
-│                                         │
-└─────────────────────────────────────────┘
-```
+- Links GitHub/LinkedIn/email reales (hoy son `github.com/angel`, `angel@example.com` — reemplazar).
+- Fuera el copy interno ("Actualiza los links en...", "Edita src/...").
 
-## Funcionalidad
+## Envío con Resend
 
-1. **Formulario controlado** (React state)
-2. **Validación client-side:** nombre requerido, email válido, mensaje no vacío
-3. **Submit:** POST a `/api/contacto` (API route de Astro)
-4. **API Route:** recibe JSON, envía email o guarda en log
-5. **Feedback:** éxito / error visible sin recargar
-6. **Protección:** honeypot anti-spam (sin captcha visible)
+1. **API route** `src/pages/api/contacto.ts` (EDITAR):
+   - Mantiene validación server-side actual (nombre ≥2, email válido, mensaje ≥10, honeypot silencioso) + límites de longitud actuales.
+   - Si existe `RESEND_API_KEY` → envía con el SDK (`resend` package) a `CONTACT_TO_EMAIL`, `from` en el dominio verificado o `onboarding@resend.dev` en pruebas, `replyTo` = email del visitante.
+   - Si NO existe (dev local) → `console.log` como hoy y 200 (comportamiento dev intacto).
+   - Respuesta 200: `{ ok: true, message }` (bilingüe vía spec 10). Error de Resend → 502 con mensaje genérico al cliente, detalle en server log. Nunca exponer la key ni el error crudo.
+2. **Antispam:** honeypot (actual) + throttle simple (máx. 5 POST / 10 min por IP, 429 si excede). Sin captcha.
+3. **Cliente** `ContactForm.tsx` (EDITAR menor): mensajes de validación y feedback desde diccionarios i18n (spec 10). Resto igual (labels, `aria-live`, estados — ya correctos).
 
-## API Route
+## Variables de entorno
 
 ```
-POST /api/contacto
-Body: { nombre, email, mensaje, honeypot }
+RESEND_API_KEY=re_...        (solo servidor, NUNCA prefijo PUBLIC_)
+CONTACT_TO_EMAIL=angel@...   (email real)
 ```
 
-Opciones de envío:
-- **Opción A:** Email via SMTP (himalaya/nodemailer) — requiere credenciales
-- **Opción B:** Guardar en JSON file (dev) / log (prod) — simple, sin deps
-- **Opción C:** Servicio externo (Formspree, Web3Forms) — sin backend
-
-**Recomendación:** Opción B para dev, migrar a A o C para prod.
-
-## Validación
-
-- `nombre`: string, min 2 chars
-- `email`: regex email válido
-- `mensaje`: string, min 10 chars
-- `honeypot`: string vacío (si tiene valor, es bot → rechazar silenciosamente)
+Agregar ambas a `.env.example` con placeholders (sin valores reales). `.env` real solo en local + dashboard de Vercel.
 
 ## Archivos
 
 ```
-src/sections/
-  Contacto.astro
-
-src/components/
-  ContactForm.tsx (React — formulario controlado)
-
-src/pages/api/
-  contacto.ts (API route — POST handler)
+src/pages/api/contacto.ts  (EDITAR: envío Resend + throttle + i18n)
+src/components/ContactForm.tsx (EDITAR: strings a diccionarios)
+src/sections/Contacto.astro (EDITAR: links reales, fuera copy interno)
+.env.example (EDITAR: + RESEND_API_KEY, CONTACT_TO_EMAIL)
+package.json (npm i resend — en implementación)
 ```
 
 ## Criterios de Aceptación
 
-- [ ] Formulario renderiza correctamente
-- [ ] Validación client-side funciona (muestra errores)
-- [ ] Submit exitoso muestra mensaje de confirmación
-- [ ] Submit con error muestra mensaje de error
-- [ ] API route responde 200 con datos válidos
-- [ ] API route responde 400 con datos inválidos
-- [ ] Honeypot rechaza bots silenciosamente
-- [ ] Links a redes abren en nueva pestaña
-- [ ] Accesible: labels en todos los inputs, focus visible, error messages con aria
+- [ ] POST válido en **producción** → email recibido en `CONTACT_TO_EMAIL` (prueba real, CE-5)
+- [ ] POST inválido → 400 con detalle por campo (comportamiento actual, mantener)
+- [ ] Honeypot con valor → 200 silencioso sin enviar (mantener)
+- [ ] Sin `RESEND_API_KEY` (dev) → log + 200, sin crash
+- [ ] 6to POST en 10 min desde misma IP → 429
+- [ ] `RESEND_API_KEY` no aparece en bundle cliente (grep en `dist/client` → vacío)
+- [ ] Formulario usable en ES y EN (spec 10)
+- [ ] Links GitHub/LinkedIn/email reales y abriendo correcto (nueva pestaña salvo `mailto:`)

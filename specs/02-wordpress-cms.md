@@ -1,91 +1,66 @@
-# 2. WordPress CMS & WPGraphQL
+# 2. WordPress CMS & WPGraphQL v2 — REESCRITA 2026-09-07
+
+> Criterios: **CE-3** (contenido real), **CE-4** (campos EN), **CE-6** (WP productivo).
+> La v1 solo cubría WP local. Esta v2 suma campos nuevos + la decisión productiva pendiente.
 
 ## Objetivo
 
-Configurar WordPress local como CMS headless para que los proyectos se gestionen vía panel de administración y se consuman via GraphQL desde Astro.
+WP como CMS headless en dos entornos: **local** (autoría y dev, ya funciona) y **productivo** (GraphQL + media públicos para el build de Vercel).
 
-## Stack WP
+## Lo que se mantiene (local, verificado)
 
-- WordPress 6 + PHP 8.3 (docker-compose ya configurado)
-- Plugin: **WPGraphQL** (gratuito, activa endpoint `/graphql`)
-- Plugin: **WPGraphQL for ACF** (si usamos Advanced Custom Fields)
+- `docker-compose`: WP `:8080`, MySQL `:3306`, phpMyAdmin `:8081`.
+- Plugins: WPGraphQL + CPT `proyecto` (ver `wp-content/plugins/portfolio-cpt/`).
+- `src/lib/wp-client.ts`, `wp-queries.ts`, `types.ts` con fallback `[]` si WP cae (el build nunca rompe por WP).
 
-## Content Model
+## Cambios al content model (nuevos)
 
-### Custom Post Type: `proyecto`
+Campos a agregar al CPT `proyecto` (vía `portfolio-cpt.php`):
 
-Campos:
-- `title` (nativo) — Nombre del proyecto
-- `slug` (nativo) — URL-friendly
-- `excerpt` (nativo) — Descripción corta (card)
-- `featuredImage` (nativo) — Imagen principal
-- `content` (nativo) — Descripción larga (HTML)
-- `proyectoURL` (ACF o meta) — Link al deploy
-- `repoURL` (ACF o meta) — Link al repositorio
-- `techStack` (taxonomy o repeater) — Tecnologías usadas
-- `categoria` (taxonomy) — Frontend / Backend / Fullstack / Mobile
+- `destacado` (boolean) — ordena la grilla, destacados primero (spec 05).
+- `titleEn`, `excerptEn` (text) — copy inglés con fallback a ES (spec 10). El `content` largo queda solo en ES por ahora.
+- Regla de media: imágenes propias, ~1200×630, <300KB, con `altText` siempre cargado.
 
-### Taxonomía: `categoria-proyecto`
+Query `QUERY_PROYECTOS`: sumar `destacado`, `titleEn`, `excerptEn`; ordenar destacados primero; límite 4.
 
-Términos: Frontend, Backend, Fullstack, Mobile, Otro
+## WordPress productivo (CE-6 — decisión abierta)
 
-## GraphQL Query (referencia)
+Requisitos no negociables, viva donde viva:
 
-```graphql
-query Proyectos {
-  proyectos {
-    nodes {
-      id
-      title
-      slug
-      excerpt
-      content
-      featuredImage {
-        node {
-          sourceUrl
-          altText
-        }
-      }
-      proyectoFields {
-        proyectoUrl
-        repoUrl
-        techStack
-      }
-      categoriasProyecto {
-        nodes {
-          name
-          slug
-        }
-      }
-    }
-  }
-}
+1. URL pública HTTPS con `/graphql` accesible desde los builders de Vercel.
+2. Media servida desde dominio público (las `sourceUrl` van al HTML tal cual — nada de `localhost`).
+3. Mismo CPT + campos que local (exportar/importar config del plugin).
+4. `WP_APP_PASSWORD` para el endpoint de revalidación si se usa autenticado (ver spec 08).
+
+**Recomendación por defecto: hosting WordPress administrado (compartido) con SSL gratis.** Por qué: 3–4 posts + media mínima no justifican un VPS; cero mantenimiento; costo menor. El VPS propio solo si el objetivo pasa a ser practicar infra — hoy el objetivo es el portfolio, no el hosting.
+
+## Variables
+
+```
+# Local (dev) — ya existen
+WP_GRAPHQL_URL=http://localhost:8080/graphql
+# Prod (solo Vercel dashboard + .env local para probar prod)
+WP_GRAPHQL_URL_PROD=https://wp.tudominio.com/graphql
 ```
 
-## Configuración Docker
-
-- `docker-compose up -d` → WP en `:8080`, MySQL en `:3306`, phpMyAdmin en `:8081`
-- `./wp-content` montado como volumen para themes/plugins
-- WPGraphQL instalado y activado
+El cliente elige URL según `import.meta.env.PROD` (o variable `PUBLIC_ENV`). Nunca hardcodear hosts en `wp-client.ts`.
 
 ## Archivos
 
 ```
-docker-compose.yml (ya existe)
-wp-content/plugins/ (WPGraphQL instalado)
-
-src/lib/
-  wp-client.ts (fetch wrapper para GraphQL)
-  wp-queries.ts (queries tipadas)
-  types.ts (interfaces TypeScript: Proyecto, Categoria, etc.)
+wp-content/plugins/portfolio-cpt/portfolio-cpt.php (EDITAR: + destacado, titleEn, excerptEn)
+src/lib/types.ts (EDITAR: nuevos campos)
+src/lib/wp-queries.ts (EDITAR: query extendida + orden + límite)
+src/lib/wp-client.ts (EDITAR: selección local/prod por entorno)
+.env.example (EDITAR: + WP_GRAPHQL_URL_PROD)
 ```
 
 ## Criterios de Aceptación
 
-- [ ] `docker-compose up -d` levanta WP en localhost:8080
-- [ ] WPGraphQL activo: `localhost:8080/graphql` responde
-- [ ] CPT `proyecto` creado con todos los campos
-- [ ] Taxonomía `categoria-proyecto` con términos seed
-- [ ] Al menos 3 proyectos de ejemplo cargados en WP
-- [ ] `wp-client.ts` hace fetch y tipa la respuesta
-- [ ] La query devuelve proyectos con imagen, tech stack y categoría
+- [ ] Local intacto: `:8080/graphql` responde, 3 posts de prueba visibles en dev
+- [ ] CPT tiene `destacado`, `titleEn`, `excerptEn` (verificado en GraphiQL)
+- [ ] Query devuelve los 4 campos nuevos y ordena destacados primero
+- [ ] Proyecto sin copy EN muestra ES (fallback, con spec 10)
+- [ ] Decisión productiva tomada (hosting vs VPS) y documentada acá
+- [ ] Build con `WP_GRAPHQL_URL_PROD` trae proyectos con imágenes que cargan fuera de la LAN (CE-6)
+- [ ] Caída de WP en build → `[]` + empty state limpio, build verde igual
