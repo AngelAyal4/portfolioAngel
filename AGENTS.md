@@ -65,6 +65,23 @@ priority: <% tp.system.suggester("Prioridad", ["Urgente", "Alta", "Media", "Baja
 - /coverage/**
 - .env, .env.* (secretos reales)
 
+## Regla Suprema: Prompts, Plans y Specs
+
+**A la hora de crear specs, estos tienen que ser guardados en su carpeta correspondiente:**
+- `prompts/specs/` — especificaciones de features, arquitectura, APIs
+- `prompts/plans/` — planes de implementación, fases, tareas
+
+**NO se guardan specs ni plans en la raíz del proyecto ni en carpetas genéricas.** Siempre en `prompts/specs/` o `prompts/plans/`.
+
+Estructura esperada:
+```
+prompts/
+├── plans/
+│   └── <feature>-plan.md
+└── specs/
+    └── <feature>-spec.md
+```
+
 ## Memoria del Proyecto (sistema tipo Anthropic)
 
 Al aprender algo del usuario, del proyecto o del trabajo, guardarlo en `memory/` del proyecto, un archivo por tema (kebab-case), con frontmatter:
