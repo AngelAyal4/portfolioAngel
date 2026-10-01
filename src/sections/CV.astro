@@ -4,20 +4,28 @@ import CVItem from "../components/CVItem.astro";
 
 const experiencia = [
   {
-    title: "Soporte Técnico / IT",
-    entity: "Independiente / Empresa",
-    period: "2014 — Actual",
-    description: "Más de 10 años resolviendo infraestructura, redes y soporte a usuarios. Transición a desarrollo fullstack: automatización, scripting y aplicaciones web a medida.",
-    badges: ["Soporte", "Redes", "Linux", "Automatización"],
+    title: "Programador — Equipo Docente",
+    entity: "FAPyD · Universidad Nacional de Rosario",
+    period: "Ago 2024 — Dic 2025",
+    description: "Desarrollo y optimización de código Python con POO en producción académica. Capacitación técnica a alumnos sin experiencia. Corrección de errores + documentación técnica.",
+    badges: ["Python", "POO", "Docencia", "Documentación"],
+    current: false,
+  },
+  {
+    title: "Técnico Independiente",
+    entity: "Soporte y Desarrollo Web",
+    period: "Oct 2021 — Actual",
+    description: "Aplicaciones web PHP con arquitectura MVC. Gestión end-to-end de incidentes con documentación formal. Coordinación de equipos según criticidad e impacto. Presupuestación y gestión de proyectos.",
+    badges: ["PHP", "MVC", "MySQL", "Soporte", "Autogestión"],
     current: true,
   },
   {
-    title: "Desarrollador Fullstack (en formación)",
-    entity: "Proyectos personales / Freelance",
-    period: "2023 — Actual",
-    description: "Construcción de portfolios, APIs y apps con React, Astro, Node.js y PostgreSQL. Enfoque en código limpio, accesibilidad y deploy continuo.",
-    badges: ["React", "Astro", "Node.js", "PostgreSQL"],
-    current: true,
+    title: "Técnico de Área",
+    entity: "GESTAM Argentina S.A. — Soporte y Gestión de Incidentes",
+    period: "Ene 2013 — Sep 2021",
+    description: "Incidentes críticos en instalaciones bancarias con análisis de causa raíz. Nexo entre soporte, proveedores y clientes. Capacitación de técnicos y onboarding. Coordinación directa del área.",
+    badges: ["Soporte", "Incidentes", "Bancos", "Coordinación"],
+    current: false,
   },
 ];
 
@@ -25,16 +33,28 @@ const educacion = [
   {
     title: "Ingeniería en Sistemas de Información",
     entity: "UTN — Facultad Regional Paraná",
-    period: "2022 — Actual · Com. 1º K13",
-    description: "Formación en algoritmos, estructuras de datos, bases de datos y arquitectura de software. Promedio y materias al día.",
-    badges: ["Algoritmos", "Bases de Datos", "Sistemas"],
+    period: "2025 — Actual",
+    description: "1° año en curso. Formación en algoritmos, estructuras de datos, bases de datos y arquitectura de software.",
+    badges: ["UTN", "Algoritmos", "Bases de Datos"],
+  },
+  {
+    title: "Programador Full Stack",
+    entity: "Argentina Programa 4.0",
+    period: "Dic 2022",
+    description: "Certificación oficial en desarrollo web fullstack.",
+    badges: ["Full Stack", "Certificación"],
+  },
+  {
+    title: "Técnico en Electrónica",
+    entity: "EET N°465 Gral. Manuel Belgrano",
+    period: "Dic 2012",
+    description: "Formación técnica en electrónica.",
+    badges: ["Electrónica", "Técnico"],
   },
 ];
 
 const cursos = [
-  { title: "Curso React / Next.js", entity: "Plataforma (ej. Udemy)", period: "2024", description: "Hooks, SSR, routing y optimización.", badges: ["React","Next.js"] },
-  { title: "Node.js + NestJS", entity: "Plataforma", period: "2024", description: "APIs REST, auth JWT, testing.", badges: ["NestJS","TypeScript"] },
-  { title: "SQL & PostgreSQL", entity: "Plataforma", period: "2023", description: "Modelado, consultas y optimización.", badges: ["PostgreSQL"] },
+  { title: "Inglés B1", entity: "Lectura técnica y comunicación escrita", period: "En curso", description: "Comprensión de documentación técnica y comunicación escrita en inglés.", badges: ["Inglés", "B1"] },
 ];
 // TODO: Reemplazar cursos placeholder por certificaciones reales
 ---

@@ -65,22 +65,32 @@ priority: <% tp.system.suggester("Prioridad", ["Urgente", "Alta", "Media", "Baja
 - /coverage/**
 - .env, .env.* (secretos reales)
 
-## Regla Suprema: Prompts, Plans y Specs
+## Regla Suprema: agentWorkspace
 
-**A la hora de crear specs, estos tienen que ser guardados en su carpeta correspondiente:**
-- `prompts/specs/` — especificaciones de features, arquitectura, APIs
-- `prompts/plans/` — planes de implementación, fases, tareas
+**Toda especificación, plan y documentación de desarrollo vive en `agentWorkspace/`.**
 
-**NO se guardan specs ni plans en la raíz del proyecto ni en carpetas genéricas.** Siempre en `prompts/specs/` o `prompts/plans/`.
-
-Estructura esperada:
+Estructura:
 ```
-prompts/
-├── plans/
-│   └── <feature>-plan.md
-└── specs/
-    └── <feature>-spec.md
+agentWorkspace/
+├── _master/           ← Plan maestro (DAG, criterios globales, decisiones)
+├── backend/           ← Specs y planes de backend
+├── frontend/          ← Specs y planes de frontend
+├── qa/                ← Specs y planes de QA
+├── devops/            ← Specs y planes de infra/deploy
+├── docs/              ← Specs y planes de documentación
+├── design-uiux/       ← Specs y planes de diseño UI/UX
+└── security/          ← Specs y planes de seguridad
 ```
+
+Cada área tiene `specs/` y `plans/`. Los specs se ejecutan en sesiones nuevas de OpenCode (sin contexto compartido) para evitar alucinaciones. Si se necesita referenciar código, se guarda en el spec o en un archivo accesible.
+
+**NO se guardan specs ni planes en la raíz del proyecto ni en carpetas genéricas.**
+
+### Flujo de trabajo
+1. **Spec storm**: en sesión principal (Angel + Kaspian) se definen todos los specs del proyecto
+2. **DAG**: Kaspian infiere el orden de ejecución de los `depends_on` de cada spec
+3. **Ejecución**: Kaspian (ChiefAgent) delega cada spec a OpenCode en sesiones nuevas
+4. **Verificación**: Kaspian revisa criterios de éxito y avanza al siguiente spec
 
 ## Memoria del Proyecto (sistema tipo Anthropic)
 

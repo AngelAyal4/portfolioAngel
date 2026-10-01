@@ -12,7 +12,7 @@ const {
   imageAlt = "Retrato de Angel José Luis Ayala, desarrollador fullstack",
 } = Astro.props;
 
-const stack = ["React", "TypeScript", "Node.js", "Astro", "Tailwind", "NestJS", "PostgreSQL", "WordPress"];
+const stack = ["PHP","MySQL","JavaScript","React","TypeScript","Node.js","NestJS","Next.js","Python","Laravel","Astro","Tailwind","PostgreSQL","MongoDB","Git","HTML5","CSS3","SCSS"];
 ---
 
 <Section id="sobre-mi" class="scroll-mt-16" aria-labelledby="sobre-mi-heading">
@@ -20,7 +20,7 @@ const stack = ["React", "TypeScript", "Node.js", "Astro", "Tailwind", "NestJS", 
     <h2 id="sobre-mi-heading" class="font-display text-2xl md:text-3xl font-bold text-text">Sobre mí</h2>
 
     <div class="mt-8 grid gap-8 md:grid-cols-[320px_1fr] md:items-start">
-      <!-- Foto -->
+      <!-- Foto + Stack -->
       <div class="mx-auto w-full max-w-[320px] md:mx-0">
         <img
           src={imageSrc}
@@ -32,22 +32,36 @@ const stack = ["React", "TypeScript", "Node.js", "Astro", "Tailwind", "NestJS", 
           class="aspect-square w-full rounded-2xl border border-border bg-surface object-cover shadow-sm"
           onerror="this.onerror=null;this.src='https://picsum.photos/seed/angel-avatar/400/400'"
         />
-        <p class="mt-3 text-center text-xs text-text-muted md:text-left">UTN — Ingeniería en Sistemas · En curso</p>
+        <p class="mt-3 text-center text-xs text-text-muted md:text-left">Rosario, Santa Fe · Desarrollador Fullstack</p>
+
+        <div class="mt-6 hidden md:block">
+          <h3 class="text-sm font-semibold tracking-wide text-text uppercase">Stack principal</h3>
+          <ul class="mt-3 flex flex-wrap gap-2" aria-label="Tecnologías principales">
+            {stack.map((tech) => (
+              <li><Badge>{tech}</Badge></li>
+            ))}
+          </ul>
+        </div>
       </div>
 
       <!-- Texto -->
       <div class="flex flex-col gap-4">
-        <p class="text-base leading-relaxed text-text-muted">
-          Estudiante de <strong class="font-semibold text-text">Ingeniería de Sistemas de Información (UTN)</strong> con más de 10 años en soporte e infraestructura IT, en transición a desarrollo fullstack.
-        </p>
-        <p class="text-base leading-relaxed text-text-muted">
-          Enfocado en aplicaciones web modernas con <strong class="font-semibold text-text">React, Node.js y TypeScript</strong>. Trabajo de la idea al deploy: diseño, código, tests y CI/CD.
-        </p>
+        <p class="text-base md:text-lg text-text-muted leading-relaxed">
+  Durante <strong class="font-semibold text-text">trece años</strong> trabajé en <strong class="font-semibold text-text">mantenimiento técnico</strong>, ocho de ellos en <strong class="font-semibold text-text">instalaciones bancarias</strong>. Son sistemas donde una falla no se pospone: hay que diagnosticarla con el equipo funcionando, entender qué la causó y dejarlo documentado para que no vuelva a pasar.
+</p>
+
+<p class="text-base md:text-lg text-text-muted leading-relaxed">
+  Ese trabajo me formó en algo que resultó transferible: leer un sistema completo, rastrear una falla hasta su origen real y no conformarme con que "ahora anda". Cuando empecé a programar me di cuenta de que era el mismo razonamiento aplicado a otra materia.
+</p>
+
+<p class="text-base md:text-lg text-text-muted leading-relaxed">
+  Hoy desarrollo aplicaciones web completas con <strong class="font-semibold text-text">TypeScript, React,Astro, Next.js y Nest.js</strong>, tambien web estaticas con <strong class="font-semibold text-text">Astro headless CMS</strong>, y las complemento con la creacion de <strong class="font-semibold text-text">Automatizaciones</strong> inteligentes con herramientas de <strong class="font-semibold text-text">Inteligencia Artificial</strong>. Cambié el rubro, no la forma de pensar.
+</p>
         <p class="text-base leading-relaxed text-text">
-          <em class="not-italic font-medium text-accent">Combino experiencia técnica real con formación académica actualizada.</em>
+          <em class="not-italic font-medium text-accent">Experiencia real en producción + formación académica actualizada en Ingeniería de Sistemas (UTN).</em>
         </p>
 
-        <div class="mt-2">
+        <div class="mt-6 md:hidden">
           <h3 class="text-sm font-semibold tracking-wide text-text uppercase">Stack principal</h3>
           <ul class="mt-3 flex flex-wrap gap-2" aria-label="Tecnologías principales">
             {stack.map((tech) => (
